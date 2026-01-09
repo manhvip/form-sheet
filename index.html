@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Form gửi Google Sheet</title>
+</head>
+<body>
+
+<h2>Form gửi dữ liệu Google Sheets</h2>
+
+<form id="form">
+  <input id="sheet" placeholder="Nhập tên sheet (vd: test2)" required><br><br>
+
+  <input id="tk" placeholder="Tài khoản" required><br><br>
+  <input id="mk" placeholder="Mật khẩu" required><br><br>
+  <input id="phone" placeholder="Số điện thoại" required><br><br>
+  <input id="trangthai" placeholder="Trạng thái" required><br><br>
+  <input id="menhgia" placeholder="Mệnh giá" required><br><br>
+
+  <button type="submit">Gửi dữ liệu</button>
+</form>
+
+<p id="result"></p>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbxDu-2rGjueQ8ZEmuDqR-0nCum95m-5I12W4s_qVSnKP5GjY0-2jPvY0DFHyc_5vGBF/exec";
+
+document.getElementById("form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const data = {
+    sheet: document.getElementById("sheet").value,
+    values: [
+      document.getElementById("tk").value,
+      document.getElementById("mk").value,
+      document.getElementById("phone").value,
+      document.getElementById("trangthai").value,
+      document.getElementById("menhgia").value
+    ]
+  };
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    document.getElementById("result").innerText = result.message;
+
+  } catch (err) {
+    document.getElementById("result").innerText = "Lỗi gửi dữ liệu!";
+  }
+});
+</script>
+
+</body>
+</html>
